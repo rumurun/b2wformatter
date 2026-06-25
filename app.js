@@ -113,13 +113,13 @@ function formatBGM(bgm) {
     if (bgm.trim() == "stop") {
         return "stop music fadeout 2.0\n";
     }
-    const formatted = `play music "${bgm.trim()}" fadein 2.0\n`;
+    const formatted = `play music "audio/${bgm.trim()}" fadein 2.0\n`;
     return formatted;
 }
 
 function formatSFX(sfx) {
     console.log(`Formatting SFX: ${sfx}`);
-    const formatted = `play sound "${sfx.trim()}"\n`;
+    const formatted = `play sound "audio/${sfx.trim()}"\n`;
     return formatted;
 }
 
@@ -132,9 +132,6 @@ function formatBCG(img) {
 function formatSprite(transition, spritechar, mvmt, base, emot, pos, lineNum, branch) {
     console.log(`Formatting SPRITE: ${spritechar}`);
     let formatted = "";
-    // (show)          (n)         (meek)   (wary)         (at right, faceleft,   bounce)   (with dissolve)
-    // (transition)    (character) (base)   (emotion)      (position, position, movement)   (transition)
-
     // transitions:
     // fade in character: show [char at position] with dissolve
     // fade out character: hide [char] with dissolve
