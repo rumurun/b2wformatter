@@ -367,13 +367,26 @@ function formatNotes(notes) {
     return formatted;
 }
 
-function formatChoice(section, text) {
-    console.log(`Formatting CHOICE: ${text}`);
+function formatChoice(section, text, isChoice) {
     let formatted = "";
-    if (section.includes(".1")) {
-        formatted = `menu:\n`;
+    if (isChoice){
+        console.log(`Formatting CHOICE: ${text}`);
+        if (section.includes("a")) {
+            formatted = `menu:\n    "${text.trim()}":\n`;
+        }
+        else {
+            formatted = `    "${text.trim()}":\n`;
+        }
     }
-    formatted += `    "${text.trim()}":\n`;
+    else {
+        console.log(`Formatting BRANCH: ${text}`);
+        if (text.trim() !== "") {
+            formatted = `if ${text.trim()}:\n`;
+        }
+        else {
+            formatted = "else:\n";
+        }
+    }
     return formatted;
 }
 
@@ -390,7 +403,7 @@ function formatLines(rows) {
             branch = false;
         }
         if (currLine.section.length != 0){
-            if (branch) {code += branchTab;}
+            if (branch && !currLine.section.includes("Branch")) {code += branchTab;}
             code += formatSection(currLine.section);
         }
         if (currLine.notes.length != 0){
@@ -417,7 +430,11 @@ function formatLines(rows) {
             code += formatSprite(currLine.transition, currLine.sprite, currLine.mvmt, currLine.base, currLine.emot, currLine.pos, cnt, branch);
         }
         if (currLine.section.includes("Choice")) {
-            code += formatChoice(currLine.section, currLine.text);
+            code += formatChoice(currLine.section, currLine.text, 1);
+            branch = true;
+        }
+        else if (currLine.section.includes("Branch")) {
+            code += formatChoice(currLine.section, currLine.text, 0);
             branch = true;
         }
         else if (currLine.text.length != 0){
@@ -426,7 +443,7 @@ function formatLines(rows) {
         }
     }
 
-    return code;
+    return code += "\nreturn\n";
 }
 
 function downloadFile(code, fileName) {
