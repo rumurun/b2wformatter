@@ -21,7 +21,7 @@ parseButton.addEventListener("click", async () => {
     const lineVals = parseTSV(tsvText);
     parsedOutput = formatLines(lineVals);
 
-    preview.textContent = parsedOutput.substring(0, 200) + "...";
+    preview.textContent = "Done!";
     output.textContent = parsedOutput;
 });
 
@@ -449,7 +449,7 @@ function formatLines(rows) {
 function downloadFile(code, fileName) {
 
     const dlPrompt = confirm(
-        `Do you want to download the formatted file: ${fileName}.rpy?`
+        `Do you want to download the formatted file: ${fileName}.txt?`
     );
 
     if (!dlPrompt) {
@@ -457,14 +457,14 @@ function downloadFile(code, fileName) {
     }
 
     const blob = new Blob([code], {
-        type: "text/x-python"
+        type: "text/plain"
     });
 
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
 
     a.href = url;
-    a.download = `${fileName}.rpy`;
+    a.download = `${fileName}.txt`;
 
     a.click();
 
